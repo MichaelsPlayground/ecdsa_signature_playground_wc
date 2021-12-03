@@ -163,6 +163,36 @@ class _MyFormPageState extends State<Rsa2048KeyGenerationRoute> {
                     return null;
                   },
                 ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            textStyle: TextStyle(color: Colors.white)),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final data =
+                            ClipboardData(text: privateKeyController.text);
+                            await Clipboard.setData(data);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: const Duration(seconds: 1),
+                                content: const Text(
+                                    'Privaten Schlüssel in die Zwischenablage kopiert'),
+                              ),
+                            );
+                          } else {
+                            print("Formular ist nicht gültig");
+                          }
+                        },
+                        child: Text('Schlüssel in die Zwischenablage kopieren'),
+                      ),
+                    )
+                  ],
+                ),
                 SizedBox(height: 20),
                 // public key
                 TextFormField(
