@@ -2,6 +2,8 @@
 
 RSA signature and verification
 
+For more information see here: http://fluttercrypto.bplaced.net/rsa-signature-playground-webcrypto/
+
 ```plaintext
 https://pub.dev/packages/webcrypto
 https://github.com/google/webcrypto.dart
