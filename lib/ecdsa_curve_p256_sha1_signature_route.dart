@@ -5,17 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:webcrypto/webcrypto.dart';
 import 'storage.dart';
 
-class Rsa2048Pkcs15SignatureRoute extends StatefulWidget {
-  const Rsa2048Pkcs15SignatureRoute({Key? key}) : super(key: key);
+class EcdsaCurveP256Sha1SignatureRoute extends StatefulWidget {
+  const EcdsaCurveP256Sha1SignatureRoute({Key? key}) : super(key: key);
 
-  final String title = 'PKCS 1.5 Signatur';
-  final String subtitle = 'RSA 2048 PKCS 1.5 SHA-1';
+  final String title = 'ECDSA SHA-1 Signatur';
+  final String subtitle = 'EC curve P256';
 
   @override
   _MyFormPageState createState() => _MyFormPageState();
 }
 
-class _MyFormPageState extends State<Rsa2048Pkcs15SignatureRoute> {
+class _MyFormPageState extends State<EcdsaCurveP256Sha1SignatureRoute> {
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,7 @@ class _MyFormPageState extends State<Rsa2048Pkcs15SignatureRoute> {
   TextEditingController privateKeyController = TextEditingController();
   TextEditingController outputController = TextEditingController();
 
-  String txtDescription = 'RSA 2048 Signatur mit PKCS 1.5 Padding und SHA-1 Hashing.'
+  String txtDescription = 'ECDSA Signatur mit curve P-256 und SHA-1 hashing.'
       ' Der öffentliche Schlüssel ist im PEM PKCS#8 Format.';
 
   String _returnJson(String data) {
@@ -257,17 +257,17 @@ class _MyFormPageState extends State<Rsa2048Pkcs15SignatureRoute> {
                             String signatureBase64 = '';
                             try {
                               final privateKeyBytes = getBytesFromPEMString(privateKeyPem);
-                              RsassaPkcs1V15PrivateKey rsaPrivateKey =
-                              await RsassaPkcs1V15PrivateKey.importPkcs8Key(privateKeyBytes, Hash.sha1);
+                              EcdsaPrivateKey ecdsaPrivateKey =
+                              await EcdsaPrivateKey.importPkcs8Key(privateKeyBytes, EllipticCurve.p256);
                               Uint8List dataToSignBytes = createUint8ListFromString(plaintext);
                               signatureBase64 =
-                              await rsaSignToBase64Wc(rsaPrivateKey, dataToSignBytes);
+                              await ecdsaSignToBase64Wc(ecdsaPrivateKey, dataToSignBytes);
                             } catch (error) {
                               outputController.text = 'Fehler beim Signieren';
                               return;
                             }
                             // build output string
-                            String _formdata = 'RSA-2048 PKCS 1.5' +
+                            String _formdata = 'ECDSA curve P256 SHA-1' +
                                 ':' +
                                 base64Encoding(
                                     createUint8ListFromString(plaintext)) +
@@ -338,11 +338,11 @@ class _MyFormPageState extends State<Rsa2048Pkcs15SignatureRoute> {
     );
   }
 
-  Future<String> rsaSignToBase64Wc(
-      RsassaPkcs1V15PrivateKey privateKey, Uint8List messageByte) async {
+  Future<String> ecdsaSignToBase64Wc(
+      EcdsaPrivateKey privateKey, Uint8List messageByte) async {
     try {
       var signature = await privateKey.signBytes(
-          messageByte);
+          messageByte, Hash.sha1);
       return base64Encoding(signature);
     } on Error {
       return '';

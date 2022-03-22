@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
-import 'rsa_2048_key_generation_route.dart';
-import 'rsa_2048_pkcs15_signature_verification_route.dart';
-import 'rsa_2048_pss_signature_verification_route.dart';
-import 'rsa_2048_pkcs15_signature_route.dart';
-import 'rsa_2048_pss_signature_route.dart';
+import 'ec_curve_p256_key_generation_route.dart';
+import 'ecdsa_curve_p256_sha256_signature_route.dart';
+import 'ecdsa_curve_p256_sha256_signature_verification_route.dart';
+import 'ecdsa_curve_p256_sha1_signature_route.dart';
+import 'ecdsa_curve_p256_sha1_signature_verification_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainFormPage(title: 'RSA Signature Playground'),
+      home: MainFormPage(title: 'ECDSA Signature Playground'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -58,7 +58,7 @@ class _MainFormPageState extends State<MainFormPage> {
       padding: const EdgeInsets.all(10.0),
       decoration: linkBoxDecoration(), // <--- BoxDecoration here
       child: Text(
-        'Beschreibung des Programms: http://fluttercrypto.bplaced.net/rsa-signature-playground-webcrypto/',
+        'Beschreibung des Programms: http://fluttercrypto.bplaced.net/ecdsa-signature-playground-webcrypto/',
         //'Program description: http://fluttercrypto.bplaced.net/rsa-signature-playground-webcrypto/',
         style: TextStyle(
           fontSize: 18,
@@ -106,7 +106,7 @@ class _MainFormPageState extends State<MainFormPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Diese App demonstriert die asymmetrische Signatur auf Basis des RSA Algorithmus.',
+                  'Diese App demonstriert die asymmetrische Signatur auf Basis des ECDSA Algorithmus.',
                   // 'This app is demonstrating the asymmetric signature on base of RSA algorithm.',
                   style: Theme.of(context).textTheme.headline6,
                   textAlign: TextAlign.center,
@@ -142,61 +142,61 @@ class _MainFormPageState extends State<MainFormPage> {
                       dropdownValue = newValue!;
                     });
                     if (dropdownValue ==
-                        'RSA PKCS 1.5 Padding\nSignatur') {
+                        'ECDSA curve P-256 SHA-1\nSignatur') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                Rsa2048Pkcs15SignatureRoute()),
+                                EcdsaCurveP256Sha1SignatureRoute()),
                       );
                     }
                     ;
                     if (dropdownValue ==
-                        'RSA PKCS 1.5 Padding\nVerifikation') {
+                        'ECDSA curve P-256 SHA-1\nVerifikation') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                Rsa2048Pkcs15SignatureVerificationRoute()),
+                                EcdsaCurveP256Sha1SignatureVerificationRoute()),
                       );
                     };
                     if (dropdownValue ==
-                        'RSA PSS Padding\nSignatur') {
+                        'ECDSA curve P-256 SHA-256\nSignatur') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                Rsa2048PssSignatureRoute()),
+                                EcdsaCurveP256Sha256SignatureRoute()),
                       );
                     }
                     ;
                     if (dropdownValue ==
-                        'RSA PSS Padding\nVerifikation') {
+                        'ECDSA curve P-256 SHA-256\nVerifikation') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                Rsa2048PssSignatureVerificationRoute()),
+                                EcdsaCurveP256Sha256SignatureVerificationRoute()),
                       );
                     }
                     ;
                     if (dropdownValue ==
-                        'RSA-2048 Schluessel\nGenerierung') {
+                        'EC curve P256 Schluessel\nGenerierung') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                Rsa2048KeyGenerationRoute()),
+                                EcCurveP256KeyGenerationRoute()),
                       );
                     };
                   },
                   items: <String>[
                     'Bitte wählen Sie einen Algorithmus',
-                    'RSA PSS Padding\nSignatur',
-                    'RSA PSS Padding\nVerifikation',
-                    'RSA PKCS 1.5 Padding\nSignatur',
-                    'RSA PKCS 1.5 Padding\nVerifikation',
-                    'RSA-2048 Schluessel\nGenerierung',
+                    'ECDSA curve P-256 SHA-1\nSignatur',
+                    'ECDSA curve P-256 SHA-1\nVerifikation',
+                    'ECDSA curve P-256 SHA-256\nSignatur',
+                    'ECDSA curve P-256 SHA-256\nVerifikation',
+                    'EC curve P256 Schluessel\nGenerierung',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -216,7 +216,7 @@ class _MainFormPageState extends State<MainFormPage> {
                         // own license
                         LicenseRegistry.addLicense(() async* {
                           yield LicenseEntryWithLineBreaks(
-                            ['FlutterCrypto RSA Signature Playgound'],
+                            ['FlutterCrypto ECDSA Signature Playgound'],
                             'Das Programm unterliegt keiner Lizenz und kann frei verwendet werden (Public Domain).',
                           );
                         });
@@ -234,8 +234,8 @@ class _MainFormPageState extends State<MainFormPage> {
                               padding: const EdgeInsets.only(top: 20),
                               child: Text(
                                   'Die App demonstriert die Signatur mit'
-                                      ' dem RSA Algorithmus mit den Paddings PKCS 1.5 und PSS.'
-                                      '\nDas RSA Schlüsselpaar kann erzeugt und lokal gespeichert werden.'),
+                                      ' dem ECDSA Algorithmus mit den Hashes SHA-1 und SHA-256.'
+                                      '\nDas EC Schlüsselpaar kann erzeugt und lokal gespeichert werden.'),
                             ),
                           ],
                         );
@@ -254,7 +254,7 @@ class _MainFormPageState extends State<MainFormPage> {
                 SizedBox(height: 10),
                 Link(
                   target: LinkTarget.blank, // new browser, not in app
-                  uri: Uri.parse('http://fluttercrypto.bplaced.net/rsa-signature-playground-webcrypto/'),
+                  uri: Uri.parse('http://fluttercrypto.bplaced.net/ecdsa-signature-playground-webcrypto/'),
                   builder: (context, followLink) => GestureDetector(
                     onTap: followLink,
                     child: linkWidget(),

@@ -5,17 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:webcrypto/webcrypto.dart';
 import 'storage.dart';
 
-class Rsa2048PssSignatureVerificationRoute extends StatefulWidget {
-  const Rsa2048PssSignatureVerificationRoute({Key? key}) : super(key: key);
+class EcdsaCurveP256Sha256SignatureVerificationRoute extends StatefulWidget {
+  const EcdsaCurveP256Sha256SignatureVerificationRoute({Key? key}) : super(key: key);
 
-  final String title = 'PSS Verifikation';
-  final String subtitle = 'RSA 2048 PSS';
+  final String title = 'ECDSA SHA-256 Verifikation';
+  final String subtitle = 'EC curve P-256';
 
   @override
   _MyFormPageState createState() => _MyFormPageState();
 }
 
-class _MyFormPageState extends State<Rsa2048PssSignatureVerificationRoute> {
+class _MyFormPageState extends State<EcdsaCurveP256Sha256SignatureVerificationRoute> {
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,7 @@ class _MyFormPageState extends State<Rsa2048PssSignatureVerificationRoute> {
       TextEditingController();
 
   String txtDescription =
-      'RSA 2048 Verifikation einer Unterschrift mit RSA PSS Padding und SHA-256 hashing.'
+      'ECDSA Verifikation einer Unterschrift mit curve P-256 und SHA-256 hashing.'
       ' Der öffentliche Schlüssel ist im PEM PKCS#8 Format.';
 
   Future<bool> _fileExistsPublicKey() async {
@@ -249,9 +249,9 @@ class _MyFormPageState extends State<Rsa2048PssSignatureVerificationRoute> {
                                   'Fehler: Die Eingabe ist ungültig.';
                               return;
                             }
-                            if (algorithm != 'RSA-2048 PSS') {
+                            if (algorithm != 'ECDSA curve P256 SHA-256') {
                               outputController.text =
-                                  'Fehler: es handelt sich nicht um einen Datensatz, der mit RSA-2048 PSS SHA-1 signiert worden ist.';
+                              'Fehler: es handelt sich nicht um einen Datensatz, der mit ECDSA curve P-256 SHA-256 signiert worden ist.';
                               return;
                             }
 
@@ -259,14 +259,14 @@ class _MyFormPageState extends State<Rsa2048PssSignatureVerificationRoute> {
                             try {
                               final publicKeyBytes =
                                   getBytesFromPEMString(publicKeyPem);
-                              RsaPssPublicKey rsaPublicKey =
-                                  await RsaPssPublicKey.importSpkiKey(
-                                      publicKeyBytes, Hash.sha256);
+                              EcdsaPublicKey ecdsaPublicKey =
+                                  await EcdsaPublicKey.importSpkiKey(
+                                      publicKeyBytes, EllipticCurve.p256);
                               //printC('used public key:\n' + publicKeyPem);
                               final plaintext = base64Decoding(plaintextBase64);
                               bool signatureVerified =
-                                  await rsaVerifiySignatureFromBase64Wc(
-                                      rsaPublicKey, plaintext, signatureBase64);
+                                  await ecdsaVerifiySignatureFromBase64Wc(
+                                      ecdsaPublicKey, plaintext, signatureBase64);
                               if (signatureVerified == true) {
                                 verificationtext = 'Die Signatur ist RICHTIG';
                               } else {
@@ -373,12 +373,12 @@ class _MyFormPageState extends State<Rsa2048PssSignatureVerificationRoute> {
     return Uint8List.fromList(base64Decode(base64));
   }
 
-  Future<bool> rsaVerifiySignatureFromBase64Wc(RsaPssPublicKey publicKey,
+  Future<bool> ecdsaVerifiySignatureFromBase64Wc(EcdsaPublicKey publicKey,
       Uint8List messageByte, String signatureBase64) async {
     try {
       var signature = base64Decoding(signatureBase64);
       var verificationResult = await publicKey.verifyBytes(
-          signature, messageByte, 32); // 32 byte  = 256 bit for SHA-256
+          signature, messageByte, Hash.sha256);
       return verificationResult;
     } on Error {
       return false;

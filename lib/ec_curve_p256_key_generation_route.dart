@@ -6,17 +6,17 @@ import 'package:flutter/services.dart';
 import 'package:webcrypto/webcrypto.dart';
 import 'storage.dart';
 
-class Rsa2048KeyGenerationRoute extends StatefulWidget {
-  const Rsa2048KeyGenerationRoute({Key? key}) : super(key: key);
+class EcCurveP256KeyGenerationRoute extends StatefulWidget {
+  const EcCurveP256KeyGenerationRoute({Key? key}) : super(key: key);
 
   final String title = 'Schlüsselerzeugung';
-  final String subtitle = 'RSA 2048';
+  final String subtitle = 'EC curve P-256';
 
   @override
   _MyFormPageState createState() => _MyFormPageState();
 }
 
-class _MyFormPageState extends State<Rsa2048KeyGenerationRoute> {
+class _MyFormPageState extends State<EcCurveP256KeyGenerationRoute> {
   @override
   void initState() {
     super.initState();
@@ -45,7 +45,7 @@ class _MyFormPageState extends State<Rsa2048KeyGenerationRoute> {
   String publicKeyAfterGeneration = '';
 
   String txtDescription =
-      'Erzeugung eines RSA Schlüsselpaares mit 2048 Bit Länge.'
+      'Erzeugung eines EC Schlüsselpaares der Kurve P256.'
       ' Das Schlüsselpaar kann lokal gespeichert werden.';
 
   Future<bool> _fileExistsPrivateKey() async {
@@ -274,10 +274,10 @@ class _MyFormPageState extends State<Rsa2048KeyGenerationRoute> {
                             primary: Colors.blue,
                             textStyle: TextStyle(color: Colors.white)),
                         onPressed: () async {
-                          // generate a RSA key pair with 2048 bit strength
-                          KeyPair<RsaOaepPrivateKey, RsaOaepPublicKey> keyPair =
-                              await RsaOaepPrivateKey.generateKey(
-                                  2048, BigInt.parse('65537'), Hash.sha1);
+                          // generate an EC key pair curve P-256 strength
+                          //KeyPair<RsaOaepPrivateKey, RsaOaepPublicKey> keyPair =
+                          KeyPair<EcdsaPrivateKey, EcdsaPublicKey> keyPair =
+                              await EcdsaPrivateKey.generateKey(EllipticCurve.p256);
                           // private key
                           final privateKey =
                               await keyPair.privateKey.exportPkcs8Key();
