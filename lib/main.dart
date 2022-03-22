@@ -181,7 +181,7 @@ class _MainFormPageState extends State<MainFormPage> {
                     }
                     ;
                     if (dropdownValue ==
-                        'EC curve P256 Schluessel\nGenerierung') {
+                        'EC curve P-256 Schluessel\nGenerierung') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -196,7 +196,7 @@ class _MainFormPageState extends State<MainFormPage> {
                     'ECDSA curve P-256 SHA-1\nVerifikation',
                     'ECDSA curve P-256 SHA-256\nSignatur',
                     'ECDSA curve P-256 SHA-256\nVerifikation',
-                    'EC curve P256 Schluessel\nGenerierung',
+                    'EC curve P-256 Schluessel\nGenerierung',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,

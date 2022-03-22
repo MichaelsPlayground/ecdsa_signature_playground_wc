@@ -8,7 +8,7 @@ import 'storage.dart';
 class EcdsaCurveP256Sha256SignatureVerificationRoute extends StatefulWidget {
   const EcdsaCurveP256Sha256SignatureVerificationRoute({Key? key}) : super(key: key);
 
-  final String title = 'ECDSA SHA-256 Verifikation';
+  final String title = 'ECDSA P-256 SHA-256 Verifikation';
   final String subtitle = 'EC curve P-256';
 
   @override
@@ -249,7 +249,7 @@ class _MyFormPageState extends State<EcdsaCurveP256Sha256SignatureVerificationRo
                                   'Fehler: Die Eingabe ist ungültig.';
                               return;
                             }
-                            if (algorithm != 'ECDSA curve P256 SHA-256') {
+                            if (algorithm != 'ECDSA curve P-256 SHA-256') {
                               outputController.text =
                               'Fehler: es handelt sich nicht um einen Datensatz, der mit ECDSA curve P-256 SHA-256 signiert worden ist.';
                               return;

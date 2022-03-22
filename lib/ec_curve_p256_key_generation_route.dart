@@ -9,7 +9,7 @@ import 'storage.dart';
 class EcCurveP256KeyGenerationRoute extends StatefulWidget {
   const EcCurveP256KeyGenerationRoute({Key? key}) : super(key: key);
 
-  final String title = 'Schlüsselerzeugung';
+  final String title = 'EC Schlüsselerzeugung';
   final String subtitle = 'EC curve P-256';
 
   @override
@@ -45,7 +45,7 @@ class _MyFormPageState extends State<EcCurveP256KeyGenerationRoute> {
   String publicKeyAfterGeneration = '';
 
   String txtDescription =
-      'Erzeugung eines EC Schlüsselpaares der Kurve P256.'
+      'Erzeugung eines EC Schlüsselpaares der Kurve P-256.'
       ' Das Schlüsselpaar kann lokal gespeichert werden.';
 
   Future<bool> _fileExistsPrivateKey() async {

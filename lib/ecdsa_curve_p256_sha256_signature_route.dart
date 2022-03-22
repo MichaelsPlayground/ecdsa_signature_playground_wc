@@ -8,7 +8,7 @@ import 'storage.dart';
 class EcdsaCurveP256Sha256SignatureRoute extends StatefulWidget {
   const EcdsaCurveP256Sha256SignatureRoute({Key? key}) : super(key: key);
 
-  final String title = 'ECDSA SHA-256 Signatur';
+  final String title = 'ECDSA P-256 SHA-256 Signatur';
   final String subtitle = 'EC curve P256';
 
   @override
@@ -267,7 +267,7 @@ class _MyFormPageState extends State<EcdsaCurveP256Sha256SignatureRoute> {
                               return;
                             }
                             // build output string
-                            String _formdata = 'ECDSA curve P256 SHA-256' +
+                            String _formdata = 'ECDSA curve P-256 SHA-256' +
                                 ':' +
                                 base64Encoding(
                                     createUint8ListFromString(plaintext)) +
